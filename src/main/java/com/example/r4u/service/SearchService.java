@@ -54,6 +54,12 @@ public class SearchService {
             return itemList;
     }
 
+    public List<Item> searchItemDealInfo(String input,int page) throws IOException {
+        SearchResponse searchResponse = itemRepository.findTextItemDeal(input, page);
+        SearchHits hits = searchResponse.getHits();
+
+
+    }
 
 
 }
