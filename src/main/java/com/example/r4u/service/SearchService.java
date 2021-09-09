@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ public class SearchService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    String search_hits;
 
     public List<Item> searchAll() throws IOException {
         SearchResponse searchResponse = itemRepository.findAllItem();
@@ -54,12 +57,40 @@ public class SearchService {
             return itemList;
     }
 
+    // 사기거래 정보 in 테이블
     public List<Item> searchItemDealInfo(String input,int page) throws IOException {
         SearchResponse searchResponse = itemRepository.findTextItemDeal(input, page);
         SearchHits hits = searchResponse.getHits();
 
+        search_hits = String.valueOf(hits.getTotalHits().value);
+        log.info("totalHits",search_hits);
+
+        List<Item> itemDealList = new ArrayList<>();
+
+        if(!hits.equals(null)){
+            hits.forEach(hit -> {
+                Map<String, Object> transInfo =  hit.getSourceAsMap();
+                itemDealList.add(Item.builder()
+                        .name(String.valueOf(transInfo.get("goods")))
+                        .id(Long.valueOf((String) transInfo.get("id")))
+                        .price(Integer.parseInt(String.valueOf(transInfo.get("price"))))
+                        .platform(String.valueOf(transInfo.get("platform")))
+                        .outline(String.valueOf(transInfo.get("outline")))
+                        .timestamp(String.valueOf(transInfo.get("datetime")))
+                        .category(String.valueOf(transInfo.get("category")))
+                        .build());
+                log.info("result = {}",transInfo);
+            });
+        }
+        return itemDealList;
 
     }
+
+    //해당 품목 사기 거래 건수 반환
+    public String getTotalHits(){
+        return search_hits;
+    }
+
 
 
 }

@@ -45,10 +45,8 @@ public class ItemRepository {
 
         //띄어쓰기 붙인 검색어도 함께 검색
         StringTokenizer st = new StringTokenizer(input," ");
-        String no_space_input = "";
-        while(st.hasMoreTokens()){
-            no_space_input.concat(st.nextToken());
-        }
+        String no_space_input = input.replaceAll(" ","");
+
         log.info("no_space_input {}",no_space_input);
 
         SearchRequest searchRequest =  new SearchRequest("3d500_thecheat_data");
