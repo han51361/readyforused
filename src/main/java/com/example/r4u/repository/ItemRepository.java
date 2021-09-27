@@ -27,6 +27,7 @@ public class ItemRepository {
     public SearchResponse findAllItem() throws IOException{
         SearchRequest searchRequest =  new SearchRequest("3d500_thecheat_data");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.sort("datetime",SortOrder.DESC);
         searchRequest.source(searchSourceBuilder);
         log.info("searchRequest info : {}",searchRequest.source(searchSourceBuilder));
         try{

@@ -59,11 +59,10 @@ public class SearchService {
 
     // 사기거래 정보 in 테이블
     public List<Item> searchItemDealInfo(String input,int page) throws IOException {
-        SearchResponse searchResponse = itemRepository.findTextItemDeal(input, page);
-        SearchHits hits = searchResponse.getHits();
 
+        SearchHits hits = getSearchHits(input, page);
         search_hits = String.valueOf(hits.getTotalHits().value);
-        log.info("totalHits",search_hits);
+        //log.info("totalHits",search_hits);
 
         List<Item> itemDealList = new ArrayList<>();
 
@@ -79,11 +78,20 @@ public class SearchService {
                         .timestamp(String.valueOf(transInfo.get("datetime")))
                         .category(String.valueOf(transInfo.get("category")))
                         .build());
-                log.info("result = {}",transInfo);
+                //log.info("result = {}",transInfo);
             });
         }
         return itemDealList;
 
+    }
+
+
+    public SearchHits getSearchHits(String input, int page) throws IOException {
+        SearchResponse searchResponse = itemRepository.findTextItemDeal(input, page);
+        SearchHits hits = searchResponse.getHits();
+
+       log.info("hits : {}", hits);
+        return hits;
     }
 
     //해당 품목 사기 거래 건수 반환

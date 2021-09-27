@@ -356,7 +356,7 @@
             <div class="container px-6 mx-auto grid" >
 
 
-                <!-- word cloud-->
+
 
 
 
@@ -366,127 +366,50 @@
 
                 <div class="w-full overflow-hidden rounded-lg shadow-xs  ">
                     <div class="w-full overflow-x-auto h-full object-cover" >
+                        <div class="container flex flex-col items-center px-6 mx-auto">
+                            <svg
+                                    class="w-12 h-12 mt-8 text-purple-200"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                            >
+                               <!-- 금지 표시 -->
+                                <img src="/img/main_icon.jpeg" width="200px", height="200px;" >
+<!--                                <path-->
+<!--                                        fill-rule="evenodd"-->
+<!--                                        d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z"-->
+<!--                                        clip-rule="evenodd"-->
+<!--                                ></path>-->
 
+                            </svg>
+                            <h1 class="text-6xl font-semibold text-gray-700 dark:text-gray-200">
+                                Not Found
+                            </h1>
+                            <p class="text-gray-700 dark:text-gray-300 items-center" >
+                                찾으시는 품목을 찾지 못했습니다.
+                                <br>불편을 드려 죄송합니다
+                                <br> 뒤로가고자 하면
+                                <a
+                                        class="text-purple-600 hover:underline dark:text-purple-300"
+                                        href="http://localhost:8080/main"
+                                >
+                                   눌러주세요
+                                </a>
+                                .
+                            </p>
+                        </div>
                     </div>
 
                 </div>
                 <br>
 
                 <!-- 물건 이름 / 사진 / 위험 등급 -->
-                <div
-                        class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                >
-                    <div
-                            class="p-3 mr-4  dark:text-orange-100 "
-                    >
-                        <img src="/img/airpodpro.jpeg" width="200px", height="200px;" >
-                    </div>
-                    <div>
-                        <p
-                                class="mb-2 text-xl font-bold text-gray-700 dark:text-gray-200"
-                        >
-                        <span>
-                            <td th:text="${input_string}"
-                                style= "color: gray"></td>
-                        </span>
 
-                    </div>
-                    <div
-                            class="p-3 mr-4  dark:text-orange-100" style="position: relative; left: 220px; right: 0; margin-right: 30px"
-                    >
-                        <img src="/img/위험도.png" width="240px", height="240px ">
-                    </div>
-                </div>
 
                 <!-- CTA -->
-                <a
-                        class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
-                >
-                    <div class="flex items-center">
-                        <svg
-                                class="w-5 h-5 mr-2"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                        >
-                            <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                            ></path>
-                        </svg>
-                        <span>
-                            <td th:text="${input_string}"
-                                style= "color: gray"></td>
-                            <span style="font-size: small">최근 사기 거래 정보</span>
-                            <span>( 총</span>
-                            <td th:text="${total_cheat_count}"></td>
-                            <span>건)</span>
-                        </span>
-                    </div>
-                    <span>
-                        <td th:text= "${searchtime}"></td>
-                        <span>ms</span>
-                    </span>
-                </a>
+
                 <!-- 테스트 리스트  정렬-->
-                <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-                    <div class = "w-full overflow-x-auto">
-                        <table class="w-full whitespace-no-wrap">
-                            <thead>
-                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                <th class="px-4 py-3">일자</th>
-                                <th class="px-4 py-3">제목</th>
-                                <th class="px-4 py-3">카테고리</th>
-                                <th class="px-4 py-3">플랫폼</th>
-                                <th class="px-4 py-3">가격</th>
-                                <th class="px-4 py-3">내용</th>
-                            </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y dark:bg-gray-700 dark:bg-gray-800">
-                            <tr th:each="result : ${table_transInfo}" class="text-gray-700 dark:text-gray-400">
-                                <td class="px-4 py-3 text-sm" th:text="${result.timestamp}"></td>
-                                <td class="px-4 py-3 text-sm" th:text="${result.name}"></td>
-                                <td class="px-4 py-3 text-sm" th:text="${result.category}"></td>
-                                <td class="px-4 py-3 text-sm" th:text="${result.platform}"></td>
-                                <td class="px-4 py-3 text-sm" th:text="${result.price}"></td>
-                                <td class="px-4 py-3 text-xs" th:text="${result.outline}"></td>
-
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-
-                        <span class="col-span-2"></span>
-                        <!-- Pagination -->
-                        <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
 
 
-<!--                       페이징 바 -->
-
-                                              <nav aria-label="Table navigation">
-                                                <ul class="inline-flex items-center">
-                                                  <li>
-                                                    <button th:onclick="|location.href='@{/search/(input=${input_string},page=${page_num}-1)}'|"  class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-                                                      <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                                                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                                                      </svg>
-                                                    </button>
-                                                  </li>
-
-                                                  <li>
-                                                    <button th:onclick="|location.href='@{/search/(input=${input_string},page=${page_num}+1)}'|" class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                                                      <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                                                        <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                                                      </svg>
-                                                    </button>
-                                                  </li>
-                                                </ul>
-                                              </nav>
-
-
-                </span>
-                    </div>
-                </div>
-                <br>
                 <!-- New Table -->
 
 

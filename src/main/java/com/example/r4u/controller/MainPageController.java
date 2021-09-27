@@ -5,6 +5,7 @@ import com.example.r4u.domain.Item;
 import com.example.r4u.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ public class MainPageController {
         this.searchService = searchService;
     }
 
-   @GetMapping("/test")
+   @GetMapping("/main")
     public String  test(Model model) throws IOException{
         List<Item> itemList = searchService.searchAll();
         model.addAttribute("test_List",itemList);
@@ -41,6 +42,11 @@ public class MainPageController {
        stopWatch.start();
        if(page < 1){
            page = 1 ;
+       }
+       SearchHits result_exist = searchService.getSearchHits(input, page);
+       System.out.println(result_exist.getTotalHits().value);
+       if(result_exist.getTotalHits().value == 0){
+           return "/no_result";
        }
 
        List<Item> tableTransInfoList = searchService.searchItemDealInfo(input, page);
