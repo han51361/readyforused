@@ -1,12 +1,15 @@
 package com.example.r4u.service;
 
 import com.example.r4u.domain.Item;
+import com.example.r4u.domain.ItemFraudTrendCard;
 import com.example.r4u.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ public class SearchService {
 
     @Autowired
     private ItemRepository itemRepository;
+
 
     String search_hits;
 
@@ -55,6 +59,22 @@ public class SearchService {
         });
 
             return itemList;
+    }
+    public ItemFraudTrendCard getFraudCard(String input) throws IOException {
+
+        SearchResponse searchResponse = itemRepository.getItemFraudTrendCard(input);
+        SearchHits hits =  searchResponse.getHits();
+
+       int totalCountFraud =  (int)hits.getTotalHits().value;
+       log.info("전체 사기 발생 건 수 : {}",totalCountFraud);
+       Aggregations aggregations = searchResponse.getAggregations();
+        Map<String, Aggregation> aggMap = aggregations.getAsMap();
+
+        int totalAmountOfFraud =  Integer.parseInt(String.valueOf(aggMap.get("sum_price")));
+        int avgPriceOfFraud =  Integer.parseInt(String.valueOf(aggMap.get("avg_price")));
+        log.info("사기 평균 가격 : {}",avgPriceOfFraud);
+        log.info("전체 사기 금액 : {}",totalAmountOfFraud);
+      return new ItemFraudTrendCard(totalCountFraud,totalAmountOfFraud,avgPriceOfFraud,42);
     }
 
     // 사기거래 정보 in 테이블

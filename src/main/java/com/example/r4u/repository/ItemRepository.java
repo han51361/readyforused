@@ -8,6 +8,10 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchService;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -62,6 +66,31 @@ public class ItemRepository {
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse =  restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
         log.info("레포 반환 {}",searchResponse);
+        return searchResponse;
+
+    }
+    //사기 동향 카드 정보
+    public SearchResponse getItemFraudTrendCard(String input) throws IOException {
+        //띄어쓰기 붙인 검색어도 함께 검색
+        StringTokenizer st = new StringTokenizer(input," ");
+        String no_space_input = input.replaceAll(" ","");
+
+        SearchRequest searchRequest =  new SearchRequest("3d500_thecheat_data");
+        SearchSourceBuilder searchSourceBuilder =  new SearchSourceBuilder();
+
+        searchSourceBuilder.query(QueryBuilders.boolQuery()
+                .should(QueryBuilders.matchPhraseQuery("goods",input))
+                .should(QueryBuilders.matchPhraseQuery("goods",no_space_input)));
+        searchSourceBuilder.size(0);
+        AvgAggregationBuilder avgAggregationBuilder = AggregationBuilders.avg("avg_price").field("price");
+        SumAggregationBuilder sumAggregationBuilder = AggregationBuilders.sum("sum_price").field("price");
+        searchSourceBuilder.aggregation(avgAggregationBuilder);
+        searchSourceBuilder.aggregation(sumAggregationBuilder);
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse =  restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+        log.info("레포 반환 {}",searchResponse);
+
         return searchResponse;
 
     }
