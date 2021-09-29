@@ -429,7 +429,7 @@
                 </a>
 
                 <!--사기 동향 카드 -->
-                <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+                <div  class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
                     <!-- Card -->
                     <div
                             class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
@@ -452,7 +452,7 @@
                             <p
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                             >
-                            <td th:text="${total_cheat_count}"></td>
+                            <td th:text="${trend_card.getTotalCountOfFraud()}"></td>
                             <span>건</span>
                             </p>
                         </div>
@@ -481,7 +481,8 @@
                             <p
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                             >
-                                108,401,000 원
+                            <td th:text="${trend_card.getTotalAmountOfFraud()}"></td>
+                            <span>원</span>
                             </p>
                         </div>
                     </div>
@@ -507,7 +508,8 @@
                             <p
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                             >
-                                208,886 원
+                            <td th:text="${trend_card.getAvgPriceOfFraud()}"></td>
+                            <span>원</span>
                             </p>
                         </div>
                     </div>
@@ -535,39 +537,32 @@
                             <p
                                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                             >
-                                72 개
+                            <td th:text="${trend_card.getRegisteredBoard()}"></td>
+                            <span>개</span>
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <a
-                        class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
+                <!-- 주의 사항 카드-->
+
+                <div
+                        class="min-w-0 p-4 text-white bg-purple-600 rounded-lg shadow-xs"
                 >
-                    <div class="flex items-center">
-                        <svg
-                                class="w-5 h-5 mr-2"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                        >
-                            <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                            ></path>
-                        </svg>
-                        <span>
-                            <td th:text="${input_string}"
-                                style= "color: gray"></td>
-                            <span style="font-size: small">최근 사기 거래 정보</span>
-                            <span>( 총</span>
-                            <td th:text="${total_cheat_count}"></td>
-                            <span>건)</span>
-                        </span>
-                    </div>
+                    <h4 class="mb-4 font-semibold">
+                       최근 사기 거래 변화
+                    </h4>
                     <span>
-                        <td th:text= "${searchtime}"></td>
-                        <span>ms</span>
+                         최근 2개월간 사기 피해가
                     </span>
-                </a>
+                    <td th:text=" ${trend_card.percentOfRecentChange}"></td>
+                    <span>
+                         하고 있는 품목입니다.<br>
+                         해당 품목의 자세한 거래 가격과 피해 발생 플랫폼 현황을 확인하세요!
+                    </span>
+
+                </div>
+                <br>
                 <!-- 최근 사기 거래 피해 리스트  정렬-->
                 <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
                     <div class = "w-full overflow-x-auto">

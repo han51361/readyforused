@@ -10,6 +10,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchService;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -84,8 +85,16 @@ public class ItemRepository {
         searchSourceBuilder.size(0);
         AvgAggregationBuilder avgAggregationBuilder = AggregationBuilders.avg("avg_price").field("price");
         SumAggregationBuilder sumAggregationBuilder = AggregationBuilders.sum("sum_price").field("price");
+
+        //todo 차후 안정화 서비스를 위해서는 날짜 범위 수정 필요 -> 현재 1-8월 데이터만 몰려있다
+
+        DateRangeAggregationBuilder recentDateRangeAggregationBuilder = AggregationBuilders.dateRange("recent_fraud").field("datetime").addRange("now-120d/d","now");
+        DateRangeAggregationBuilder compareDateRangeAggregationBuilder =  AggregationBuilders.dateRange("compare_fraud").field("datetime").addRange("now-240d/d","now-120d/d");
+
         searchSourceBuilder.aggregation(avgAggregationBuilder);
         searchSourceBuilder.aggregation(sumAggregationBuilder);
+        searchSourceBuilder.aggregation(recentDateRangeAggregationBuilder);
+        searchSourceBuilder.aggregation(compareDateRangeAggregationBuilder);
 
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse =  restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);

@@ -10,6 +10,10 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.global.Global;
+import org.elasticsearch.search.aggregations.bucket.range.Range;
+import org.elasticsearch.search.aggregations.metrics.Avg;
+import org.elasticsearch.search.aggregations.metrics.Sum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,13 +72,26 @@ public class SearchService {
        int totalCountFraud =  (int)hits.getTotalHits().value;
        log.info("전체 사기 발생 건 수 : {}",totalCountFraud);
        Aggregations aggregations = searchResponse.getAggregations();
-        Map<String, Aggregation> aggMap = aggregations.getAsMap();
+        Sum sum = aggregations.get("sum_price");
+        int totalAmountOfFraud =  (int)sum.getValue();
+        Avg avg =  aggregations.get("avg_price");
+        int avgPriceOfFraud =  (int)avg.getValue();
 
-        int totalAmountOfFraud =  Integer.parseInt(String.valueOf(aggMap.get("sum_price")));
-        int avgPriceOfFraud =  Integer.parseInt(String.valueOf(aggMap.get("avg_price")));
-        log.info("사기 평균 가격 : {}",avgPriceOfFraud);
-        log.info("전체 사기 금액 : {}",totalAmountOfFraud);
-      return new ItemFraudTrendCard(totalCountFraud,totalAmountOfFraud,avgPriceOfFraud,42);
+        Range compare_fraud_Bucket = aggregations.get("compare_fraud");
+        long compareFraudDocCount = 0;
+        for (Range.Bucket entry : compare_fraud_Bucket.getBuckets()){
+            compareFraudDocCount =  entry.getDocCount();
+        }
+
+        Range recent_fraud_Bucket =  aggregations.get("recent_fraud");
+        long recentFraudDocCount= 0 ;
+        for (Range.Bucket entry : recent_fraud_Bucket.getBuckets()){
+            recentFraudDocCount = entry.getDocCount();
+        }
+
+        return new ItemFraudTrendCard(totalCountFraud,totalAmountOfFraud,avgPriceOfFraud,42,recentFraudDocCount, compareFraudDocCount);
+
+
     }
 
     // 사기거래 정보 in 테이블

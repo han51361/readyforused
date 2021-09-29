@@ -2,6 +2,7 @@ package com.example.r4u.controller;
 
 
 import com.example.r4u.domain.Item;
+import com.example.r4u.domain.ItemFraudTrendCard;
 import com.example.r4u.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,9 @@ public class MainPageController {
         // 시간 측정
        StopWatch stopWatch = new StopWatch();
        stopWatch.start();
+
+       ItemFraudTrendCard trendCard = searchService.getFraudCard(input);
+
        if(page < 1){
            page = 1 ;
        }
@@ -54,6 +58,7 @@ public class MainPageController {
        String searchTime = String.valueOf(stopWatch.getLastTaskTimeMillis());
        String totalCheatCount =  searchService.getTotalHits();
 
+       model.addAttribute("trend_card",trendCard);
        model.addAttribute("input_string", input);
        model.addAttribute("table_transInfo",tableTransInfoList);
        model.addAttribute("page_num",page);
