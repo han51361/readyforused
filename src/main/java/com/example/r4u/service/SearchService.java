@@ -2,6 +2,7 @@ package com.example.r4u.service;
 
 import com.example.r4u.domain.Item;
 import com.example.r4u.domain.ItemFraudTrendCard;
+import com.example.r4u.domain.TotalScamInfo;
 import com.example.r4u.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.elasticsearch.search.aggregations.bucket.global.Global;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.metrics.Avg;
 import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.aggregations.metrics.ValueCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +38,23 @@ public class SearchService {
 
 
     String search_hits;
+    private TotalScamInfo totalScamInfo;
 
     public List<Item> searchAll() throws IOException {
         SearchResponse searchResponse = itemRepository.findAllItem();
 
         SearchHits hits = searchResponse.getHits();
         TotalHits totalHits = hits.getTotalHits();
+
+        // 전체 사기 피해 카드 정보
+        search_hits = String.valueOf(hits.getTotalHits().value);
+
+        Aggregations aggregations = searchResponse.getAggregations();
+        Sum sum = aggregations.get("sum_price");
+        ValueCount valueCount = aggregations.get("all_fraud");
+        int total_fraud_price = (int)sum.getValue();
+        int all_fraud = (int)valueCount.getValue();
+        this.totalScamInfo = new TotalScamInfo(all_fraud,total_fraud_price);
 
         int numHits =(int) totalHits.value;
         log.info("total hits : {}",numHits);
@@ -64,6 +77,11 @@ public class SearchService {
 
             return itemList;
     }
+
+    public TotalScamInfo getTotalScamInfo(){
+        return totalScamInfo;
+    }
+
     public ItemFraudTrendCard getFraudCard(String input) throws IOException {
 
         SearchResponse searchResponse = itemRepository.getItemFraudTrendCard(input);

@@ -13,6 +13,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.range.DateRangeAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.SumAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.ValueCountAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -32,9 +33,15 @@ public class ItemRepository {
     public SearchResponse findAllItem() throws IOException{
         SearchRequest searchRequest =  new SearchRequest("3d500_thecheat_data");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        SumAggregationBuilder sumAggregationBuilder = AggregationBuilders.sum("sum_price").field("price");
+        ValueCountAggregationBuilder valueCountAggregationBuilder = AggregationBuilders.count("all_fraud").field("id.keyword");
+        searchSourceBuilder.aggregation(sumAggregationBuilder);
+        searchSourceBuilder.aggregation(valueCountAggregationBuilder);
         searchSourceBuilder.sort("datetime",SortOrder.DESC);
         searchRequest.source(searchSourceBuilder);
         log.info("searchRequest info : {}",searchRequest.source(searchSourceBuilder));
+
         try{
             SearchResponse searchResponse  = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             return searchResponse;

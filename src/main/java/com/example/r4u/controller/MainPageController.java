@@ -3,6 +3,7 @@ package com.example.r4u.controller;
 
 import com.example.r4u.domain.Item;
 import com.example.r4u.domain.ItemFraudTrendCard;
+import com.example.r4u.domain.TotalScamInfo;
 import com.example.r4u.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ public class MainPageController {
    @GetMapping("/main")
     public String  test(Model model) throws IOException{
         List<Item> itemList = searchService.searchAll();
+        TotalScamInfo allFraud = searchService.getTotalScamInfo();
+        model.addAttribute("all_fraud", allFraud);
         model.addAttribute("test_List",itemList);
         return "realmain";
    }

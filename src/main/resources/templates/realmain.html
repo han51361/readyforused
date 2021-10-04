@@ -439,9 +439,11 @@
                   >
                     총 중고거래 사기 피해 수
                   </p>
-                  <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                    20,699 건
-                  </p>
+                  <p
+                          class="text-lg font-semibold text-gray-700 dark:text-gray-200"
+                  >
+                  <td th:text="${all_fraud.getTotalScamCount()}"></td>
+                  <span> 건 </span>
                 </div>
               </div>
               <!-- Card -->
@@ -468,8 +470,8 @@
                   <p
                           class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    15,924,713,035 원
-                  </p>
+                  <td th:text="${all_fraud.getTotalScamPrice()}"></td>
+                  <span> 건 </span>
                 </div>
               </div>
 
@@ -556,7 +558,7 @@
               </div>
             </div>
             <br>
-            <!-- New Table -->
+            <!-- 총 사기 피해 금액 및 건 수 카드  -->
 
 
 
