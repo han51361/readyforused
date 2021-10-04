@@ -92,6 +92,9 @@ public class SearchService {
        Aggregations aggregations = searchResponse.getAggregations();
         Sum sum = aggregations.get("sum_price");
         int totalAmountOfFraud =  (int)sum.getValue();
+
+         // todo 평균 사기 거래가 데이터 가격 범위 조정 필요
+
         Avg avg =  aggregations.get("avg_price");
         int avgPriceOfFraud =  (int)avg.getValue();
 
