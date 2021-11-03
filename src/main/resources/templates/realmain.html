@@ -225,7 +225,7 @@
                   </svg>
                   </a>
                 </div>
-                <form action="http://localhost:8080/search" method="get">
+                <form action="http://localhost:8080/search_keyword" method="get">
                 <input
                   class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                   type="text"
@@ -551,6 +551,8 @@
                   <span> 건 </span>
                 </div>
               </div>
+
+
               <!-- Card -->
               <div
                       class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
@@ -576,7 +578,7 @@
                           class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
                   <td th:text="${all_fraud.getTotalScamPrice()}"></td>
-                  <span> 건 </span>
+                  <span> 원 </span>
                 </div>
               </div>
 
@@ -633,10 +635,10 @@
 
                 <span class="col-span-2"></span>
                 <!-- Pagination -->
-                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+<!--                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">-->
 
 
-                      <!-- 페이징 바 -->
+<!--                       페이징 바-->
 
 <!--                  <nav aria-label="Table navigation">-->
 <!--                    <ul class="inline-flex items-center">-->
